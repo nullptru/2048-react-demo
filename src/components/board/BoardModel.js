@@ -21,6 +21,7 @@ export default class BoardModel {
         this.addRandomTile();
         this.setPositions();
         this.won = false;
+        this.gameStatus = 0;//-1：lost，1：win
     }
 
     addTile(){
@@ -127,6 +128,10 @@ export default class BoardModel {
             }
         }
         return !canMove;
+    }
+
+    hasFinished(){
+        return this.hasWon() || this.hasLost();
     }
 }
 
