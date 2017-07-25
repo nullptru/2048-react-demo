@@ -1,0 +1,162 @@
+@line: 4;
+
+.tile {
+  position: absolute;
+  &.tile0 {
+    background-color: #dcb;
+  }
+
+  &.tile2 {
+    background-color: #eee;
+  }
+
+  &.tile4 {
+    background-color: #eec;
+  }
+
+  &.tile8 {
+    color: #ffe;
+    background-color: #fb8;
+  }
+
+  &.tile16 {
+    color: #ffe;
+    background-color: #f96;
+  }
+
+  &.tile32 {
+    color: #ffe;
+    background-color: #f75;
+  }
+
+  &.tile64 {
+    color: #ffe;
+    background-color: #f53;
+  }
+
+  &.tile128 {
+    color: #ffe;
+    background-color: #ec7;
+    font-size: 45px;
+  }
+
+  &.tile256 {
+    color: #ffe;
+    background-color: #ec6;
+    font-size: 45px;
+  }
+
+  &.tile512 {
+    color: #ffe;
+    background-color: #ec5;
+    font-size: 45px;
+  }
+
+  &.tile1024 {
+    color: #fff;
+    background-color: #ec3;
+    font-size: 35px;
+  }
+
+  &.tile2048 {
+    color: #fff;
+    background-color: #ec2;
+    font-size: 35px;
+  }
+}
+
+
+.tile.merged {
+  display: none!important;
+}
+
+.tile.merged.isMoving {
+  display: inline;
+}
+
+/**
+循环生成位置
+ */
+.generate_position_row(@line);
+
+.generate_position_row(@count, @row: 0) when (@row < @count) {
+    .generate_position_col(@count, @col: 0) when (@col < @count){
+      .position_@{row}_@{col}:not(.isMoving){
+        top: 110 * @row + 5px;
+        left: 110 * @col + 5px;
+      }
+      .generate_position_col(@count, @col + 1);
+    }
+   .generate_position_col(@count);
+   .generate_position_row(@count, @row + 1);
+}
+
+/**
+*循环生成行位移
+*/
+.generate_row_moving(@line);
+
+.generate_row_moving(@count, @row_from: 0) when (@row_from < @count) {
+  .generate_row_to(@count, @row_to: 0) when (@row_to < @count){
+    @name: ~"row_from_@{row_from}_to_@{row_to}";
+    .is_move() when (@row_to = @row_from){
+      .@{name}{
+        top: 110 * @row_to + 5px;
+      }
+    }
+    .is_move() when not(@row_to = @row_from){
+      .@{name} {
+        animation-duration: 0.20s;
+        animation-name: @name;
+        animation-fill-mode: forwards;
+      }
+      @keyframes @name{
+        from{
+          top: 110 * @row_from + 5px;
+        }
+        to{
+          top: 110 * @row_to + 5px;
+        }
+      }
+    }
+    .is_move();
+    .generate_row_to(@count, @row_to + 1);
+  }
+  .generate_row_to(@count);
+  .generate_row_moving(@count, @row_from + 1);
+}
+
+/**
+循环生成列位移
+ */
+.generate_col_moving(@line);
+
+.generate_col_moving(@count, @col_from: 0) when (@col_from < @count) {
+  .generate_col_to(@count, @col_to: 0) when (@col_to < @count){
+    @name: ~"col_from_@{col_from}_to_@{col_to}";
+    .is_move() when (@col_to = @col_from){
+      .@{name}{
+        left: 110 * @col_to + 5px;
+      }
+    }
+    .is_move() when not(@col_to = @col_from){
+      .@{name} {
+        animation-duration: 0.20s;
+        animation-name: @name;
+        animation-fill-mode: forwards;
+      }
+      @keyframes @name{
+        from{
+          left: 110 * @col_from + 5px;
+        }
+        to{
+          left: 110 * @col_to + 5px;
+        }
+      }
+    }
+    .is_move();
+    .generate_col_to(@count, @col_to + 1);
+  }
+  .generate_col_to(@count);
+  .generate_col_moving(@count, @col_from + 1);
+}

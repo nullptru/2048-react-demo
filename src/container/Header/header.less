@@ -1,0 +1,37 @@
+.header {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-height: 100px;
+
+  .title{
+    margin: 5px 0;
+    font-size: 35px;
+    font-weight: bold;
+    display: block;
+    color: #776e65;
+  }
+
+  .hint{
+    font-size: 15px;
+    margin: 20px 0 0 0;
+    display: block;
+    color: #555555;
+  }
+  
+  .header__left{
+    float: left;
+    &::after{
+      clear: both;
+    }
+  }
+
+  .header__right{
+    float: right;
+    &::after{
+      clear: both;
+    }
+  }
+  &::after{
+    clear: both;
+  }
+}
